@@ -26,44 +26,44 @@ api_key = '0'
 api_secret = '0'
 client = Client(api_key, api_secret)
 
-candles = client.get_historical_klines("BTCUSDT", Client.KLINE_INTERVAL_5MINUTE, "01 Jan, 2017", "10 Jul, 2020")
+candles = client.get_historical_klines("BTCUSDT", Client.KLINE_INTERVAL_5MINUTE, "01 Jan, 2017", "7 Jul, 2021")
 
 ##Convert the raw data from the exchange into a friendlier form with some basic feature creation
-#x = cf.FeatureCreation(candles)
+x = cf.FeatureCreation(candles)
 #
 ##Create our targets
-#y = cf.CreateTargets(candles,1)
+y = cf.CreateTargets(candles,1)
 #
 ##remove the top elements of the features and targets - this is for certain features that arent compatible with the top most
 ##for example SMA27 would have 27 entries that would be incompatible/incomplete and would need to be discarded
-#y = y[94:]
-#x = x[94:len(candles)-1]
+y = y[94:]
+x = x[94:len(candles)-1]
 #
 ##produce sets, avoiding overlaps!
 ##data is seporated temporily rather than randomly
 ##this prevents the model learning stuff it wouldnt know - aka leakage - which can give us false positive models
-#trny = y[:9999]
-#trnx = x[:9999]
+trny = y[:9999]
+trnx = x[:9999]
 #
 ##Validation set is not used in this starter model, but should be used if using other libraries that support early stopping.
-#valy = y[10000:12999]
-#valx = x[10000:12999]
+valy = y[10000:12999]
+valx = x[10000:12999]
 #
-#tsty = y[13000:]
-#tstx = x[13000:]
+tsty = y[13000:]
+tstx = x[13000:]
 #
-#model = GradientBoostingClassifier() 
-#model.fit(trnx,trny)
+model = GradientBoostingClassifier() 
+model.fit(trnx,trny)
 #
-#preds = model.predict(tstx)
+preds = model.predict(tstx)
 #
 ##Some basic tests so we know how well our model performs on unseen - "modern" data.
 ##Helps with fine tuning features and model parameters
-#accuracy = accuracy_score(tsty, preds)
-#mse = mean_squared_error(tsty, preds)
+accuracy = accuracy_score(tsty, preds)
+mse = mean_squared_error(tsty, preds)
 #
-#print("Accuracy = " + str(accuracy))
-#print("MSE = " + str(mse))
+print("Accuracy = " + str(accuracy))
+print("MSE = " + str(mse))
 #
 #falsePos = 0
 #falseNeg = 0
