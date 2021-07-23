@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 """
 @author: Harnick Khera (Github.com/Hephyrius)
+@author: Vitaly Feskov (Github.com/vftens)
 
 Use this class to train a basic machine learning model. Or modify it to incoportate your own machine learning models or Pipelines by
 using other libraries such as XGBoost, Keras or strategies like Spiking Neural Networks!
 
 """
+
+from cython_cppwraper.mainrrl import NeuralRRL
 
 import numpy as np
 from numpy import *
@@ -26,8 +29,10 @@ api_key = '0'
 api_secret = '0'
 client = Client(api_key, api_secret)
 
-candles = client.get_historical_klines("BTCUSDT", Client.KLINE_INTERVAL_5MINUTE, "01 Jan, 2017", "7 Jul, 2021")
+print("Loading candles from Binance...")
+candles = client.get_historical_klines("BTCUSDT", Client.KLINE_INTERVAL_5MINUTE, "01 Jan, 2017", "23 Jul, 2021")
 
+print("PREPARING Data...")
 ##Convert the raw data from the exchange into a friendlier form with some basic feature creation
 x = cf.FeatureCreation(candles)
 #
@@ -51,6 +56,8 @@ valx = x[10000:12999]
 #
 tsty = y[13000:]
 tstx = x[13000:]
+
+print("Loading GradientBoostingClassifier...")
 #
 model = GradientBoostingClassifier() 
 model.fit(trnx,trny)
